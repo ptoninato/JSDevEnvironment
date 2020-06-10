@@ -13,10 +13,10 @@ export default {
     filename: 'bundle.js'
   },
   plugins: [],
-  // module: {
-  //   loaders: [
-  //     {test: /\.js$/, exclude: /node_modules/, loaders: ['babel']},
-  //     {test: /\.css$/, loaders: ['style','css']}
-  //   ]
-  // }
+  module: {
+    rules: [
+      {test: /\.js$/, exclude: /node_modules/},
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] }
+    ]
+  }
 }
