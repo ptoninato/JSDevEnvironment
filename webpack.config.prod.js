@@ -1,18 +1,25 @@
 import path from 'path';
+import webpack from 'webpack';
 
 export default {
-  mode: "development",
-  devtool: 'inline-source-map',
+  mode: "production",
+  devtool: 'source-map',
   entry: [
     path.resolve(__dirname, 'src/index')
   ],
   target: 'web',
   output: {
-    path: path.resolve(__dirname, 'src'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js'
   },
-  plugins: [],
+  plugins: [
+    //Eliminate duplicate packages when generating bundle
+    new webpack.optimize.DedupePlugin(),
+
+    //minify JS
+    new webpack.optimize.UglifyJsPlugin()
+  ],
   module: {
     rules: [
       { test: /\.js$/, 
