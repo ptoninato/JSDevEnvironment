@@ -1,24 +1,41 @@
 import path from 'path';
-import webpack from 'webpack';
+import HtmlWebpackplugin from 'html-webpack-plugin'
 
 export default {
   mode: "production",
   devtool: 'source-map',
-  entry: [
-    path.resolve(__dirname, 'src/index')
-  ],
+  entry: {
+    vendor: path.resolve(__dirname, 'src/vendor'),
+    main: path.resolve(__dirname, 'src/index')
+  },
   target: 'web',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
+  },
+  optimization: {
+    splitChunks: {
+      // include all types of chunks
+      chunks: 'all'
+    }
   },
   plugins: [
-    //Eliminate duplicate packages when generating bundle
-    new webpack.optimize.DedupePlugin(),
-
-    //minify JS
-    new webpack.optimize.UglifyJsPlugin()
+    new HtmlWebpackplugin({
+      template: 'src/index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeStyleLinkTrypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    })
   ],
   module: {
     rules: [

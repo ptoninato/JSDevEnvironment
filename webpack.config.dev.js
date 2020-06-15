@@ -1,4 +1,6 @@
 import path from 'path';
+import HtmlWebpackplugin from 'html-webpack-plugin'
+
 
 export default {
   mode: "development",
@@ -12,7 +14,12 @@ export default {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  plugins: [],
+  plugins: [
+    new HtmlWebpackplugin({
+      template: 'src/index.html',
+      inject: true
+    })
+  ],
   module: {
     rules: [
       { test: /\.js$/, 
