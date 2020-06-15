@@ -4,11 +4,13 @@ import open from 'open';
 import webpack from 'webpack';
 import config from '../webpack.config.dev.js';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
+import cors from 'cors';
 
 /* eslint-disable no-console */
 
 const port = 3000;
 const app = express();
+app.use(cors());
 const compiler = webpack(config);
 
 app.use(WebpackDevMiddleware(compiler, {
