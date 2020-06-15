@@ -1,6 +1,7 @@
 import path from 'path';
 import HtmlWebpackplugin from 'html-webpack-plugin'
 import WebpackMd5Hash from 'webpack-md5-hash'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 export default {
   mode: "production",
@@ -22,12 +23,19 @@ export default {
     }
   },
   plugins: [
+    // Generate an external ccs file wiht a hash in the file name
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
     // has the files using MD5 so that their names change when content changes
     new WebpackMd5Hash(),
     //create HTML file that includes reference to bundled JS
     new HtmlWebpackplugin({
       template: 'src/index.html',
       inject: true,
+      //properties defined here are available in index.html
+      // using htmlWebpackPLugin.options.varName
+      //trackJSToken: '',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -51,7 +59,10 @@ export default {
             presets: ['@babel/preset-env']
           }
       }},
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] }
+      { 
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      }
     ]
   }
 }
